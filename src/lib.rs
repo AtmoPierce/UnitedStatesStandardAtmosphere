@@ -1,6 +1,7 @@
 #![no_std]
 pub mod ussa{
     use core::result::Result::*;
+    use libm::*;
 
     #[derive(Debug)]
     pub enum Constraint{
@@ -84,14 +85,14 @@ pub mod ussa{
                         let t_c = 263.1905;
                         let A = -76.3232;
                         let a = -19942.9;
-                        let temperature = t_c + A * (1.0 - ((geometric_height - Self::base_geometric_heights[base_index])/a).powf(2.0)).sqrt();
+                        let temperature = t_c + A * libm::sqrt(libm::pow(1.0 - ((geometric_height - Self::base_geometric_heights[base_index])/a),2.0));
                         return Ok(temperature);
                     }
                     else if geometric_height < 1000000.0{
                         let t_inf = 1000.0;
                         let lambda = 0.01875;
                         let eta = (geometric_height - Self::base_geometric_heights[9])*(Self::r_0+Self::base_geometric_heights[9])/(Self::r_0 + geometric_height) * 1e-3;
-                        let expo = (-lambda * eta).exp();
+                        let expo = libm::exp(-lambda * eta);
                         let temperature = t_inf - (t_inf - Self::base_geometric_temperatures[9]) * expo;
                         return Ok(temperature);
                     }
@@ -118,11 +119,11 @@ pub mod ussa{
                     let lapse_rate = Self::base_lapse_rates[gradient_index];
 
                     if lapse_rate != 0.0{
-                        let pressure = base_pressure * (base_temperature / temperature).powf((Self::g_0 * Self::air_molar_mass) / (Self::R_Star * lapse_rate));
+                        let pressure = base_pressure * libm::pow((base_temperature / temperature), ((Self::g_0 * Self::air_molar_mass) / (Self::R_Star * lapse_rate)));
                         return Ok(pressure);
                     }
                     else{
-                        let pressure = base_pressure * ((-Self::g_0 * Self::air_molar_mass * (geometric_height - Self::base_geometric_heights[base_index])) / ((Self::R_Star * temperature))).exp();
+                        let pressure = base_pressure * libm::exp((-Self::g_0 * Self::air_molar_mass * (geometric_height - Self::base_geometric_heights[base_index])) / ((Self::R_Star * temperature)));
                         return Ok(pressure)
                     }
                 },

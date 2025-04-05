@@ -1,5 +1,6 @@
-
+#![no_std]
 pub mod ussa{
+    use core::result::Result::*;
 
     #[derive(Debug)]
     pub enum Constraint{

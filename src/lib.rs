@@ -24,7 +24,9 @@ pub mod ussa{
         const base_geometric_pressures:       [f64; 13]= [101.325e3,  226.32e2,     547.48e1,   868.01,     110.90,     669.38e-1,   395.64e-2,   373.38e-3,  153.81e-3, 710.42e-5,  253.82e-5,  302.36e-6,  751.38e-8];
         const base_geometric_densities:       [f64; 13]= [1.225,      0.35822,      8.8035e-2,  1.3225e-2,  1.4275e-3,  8.6160e-4,   6.4211e-5,   6.958e-6,   2.860e-6,  9.708e-8,   2.222e-8,   5.215e-13,  3.561e-15];
         const base_lapse_rates:               [f64; 12]= [-6.5e-3,    0.0,          1.0e-3,     2.8e-3,     0.0,        -2.8e-3,    -2.0e-3,      0.0,        0.0,       12.0,       12.0,       0.0];
-    
+        const dynamic_viscosity_nist_B = 110.4; // Sutherland constant in the USSA model - documented wrong in the atmosphere document (NASA wrong, never) but in here it is 110.4 -> (https://doi.org/10.6028/NBS.CIRC.564)
+        const dynamic_viscosity_nist_A: f64 = 145.8 * e-7; // is a constant in the expression for dynamic viscosity in the USSA model -> (https://doi.org/10.6028/NBS.CIRC.564)
+
         pub fn new()->Self{
             USSA{
     
@@ -145,6 +147,11 @@ pub mod ussa{
             return Ok((1.4*Self::R_Star/Self::air_molar_mass*temperature));
         }
 
+        pub fn dynamic_viscosity(&self, geometric_height: f64)->Result<f64, &'static str>{
+            let temperature = self.temperature(geometric_height).expect("Could not determine temperature.");
+            let viscosity = Self::dynamic_viscosity_nist_A * libm::pow(temperature, 1.5) / (temperature + Self::dynamic_viscosity_nist_B) * 0.1; // 0.1 is to convert to Pascal*second
+            return Ok(viscosity);
+        }
     }
 }
 

@@ -18,7 +18,7 @@ pub mod ussa{
         pub const r_0: f64 = 6356766.0; // meters
         pub const R_Star: f64 = 8.31432e3; // J/(mol*K)
         pub const air_molar_mass: f64 = 28.9644; // kg/mol
-        pub const R_Air: f64 = USAA::R_Star / USAA::air_molar_mass; // J/(kg*K)
+        pub const R_Air: f64 = USSA::R_Star / USSA::air_molar_mass; // J/(kg*K)
         pub const g_0: f64 = 9.80655; // m/s^2
         const base_geometric_heights:         [f64; 13]= [0.0,        11019.0,      20063.0,    32162.0,    47350.0,    51413.0,     71802.0,     86000.0,    91000.0,   110000.0,   120000.0,   500000.0,   1000000.0];
         const base_geometric_temperatures:    [f64; 13]= [288.15,     216.65,       216.65,     228.650,    270.65,     270.65,      214.650,     186.87,     186.87,    240.0,      360.0,      999.24,     1000.0];

@@ -8,7 +8,7 @@ pub mod ussa{
         NoGradient
     }
 
-    #[derive(Debug, Clone)]
+    #[derive(Debug, Clone, Default)]
     pub struct USSA{
 
     }
@@ -16,9 +16,9 @@ pub mod ussa{
     impl USSA{
         // Constants
         const r_0: f64 = 6356766.0; // meters
-        const R_Star: f64 = 8.31432e3;
-        const air_molar_mass: f64 = 28.9644;
-        const g_0: f64 = 9.80655;
+        const R_Star: f64 = 8.31432e3; // J/(kg*K)
+        const air_molar_mass: f64 = 28.9644; // kg/mol
+        const g_0: f64 = 9.80655; // m/s^2
         const base_geometric_heights:         [f64; 13]= [0.0,        11019.0,      20063.0,    32162.0,    47350.0,    51413.0,     71802.0,     86000.0,    91000.0,   110000.0,   120000.0,   500000.0,   1000000.0];
         const base_geometric_temperatures:    [f64; 13]= [288.15,     216.65,       216.65,     228.650,    270.65,     270.65,      214.650,     186.87,     186.87,    240.0,      360.0,      999.24,     1000.0];
         const base_geometric_pressures:       [f64; 13]= [101.325e3,  226.32e2,     547.48e1,   868.01,     110.90,     669.38e-1,   395.64e-2,   373.38e-3,  153.81e-3, 710.42e-5,  253.82e-5,  302.36e-6,  751.38e-8];
